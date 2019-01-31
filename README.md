@@ -1,8 +1,8 @@
 # CIS 566 Homework 1: Noisy Terrain
 
 ## ID
-Name: Jiangping Xu
-PennKey: xjp
+ - __Name:__ Jiangping Xu
+ - __PennKey:__ xjp
 
 Citation
 ----------
