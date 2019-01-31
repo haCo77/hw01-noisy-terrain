@@ -11,8 +11,8 @@ import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
 // Define an object with application parameters and button callbacks
 // This will be referred to by dat.GUI's functions that add GUI elements.
 const controls = {
-  tesselations: 5,
-  'Load Scene': loadScene, // A function pointer, essentially
+  timeSpeed: 1.0,
+  mountainHeight: 7.0,
 };
 
 let square: Square;
@@ -22,6 +22,7 @@ let aPressed: boolean;
 let sPressed: boolean;
 let dPressed: boolean;
 let planePos: vec2;
+let time : number;
 
 function loadScene() {
   square = new Square(vec3.fromValues(0, 0, 0));
@@ -82,6 +83,8 @@ function main() {
 
   // Add controls to the gui
   const gui = new DAT.GUI();
+  gui.add(controls, 'timeSpeed', 0, 5);
+  gui.add(controls, 'mountainHeight', 6.0, 8.0);
 
   // get canvas and webgl context
   const canvas = <HTMLCanvasElement> document.getElementById('canvas');
@@ -112,6 +115,8 @@ function main() {
     new Shader(gl.FRAGMENT_SHADER, require('./shaders/flat-frag.glsl')),
   ]);
 
+  time = 0.0;
+
   function processKeyPresses() {
     let velocity: vec2 = vec2.fromValues(0,0);
     if(wPressed) {
@@ -134,6 +139,9 @@ function main() {
 
   // This function will be called every frame
   function tick() {
+    lambert.setTime(time);
+    lambert.setMH(controls.mountainHeight);
+    time += controls.timeSpeed;
     camera.update();
     stats.begin();
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
